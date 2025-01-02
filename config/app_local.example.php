@@ -36,18 +36,18 @@ return [
      */
     'Datasources' => [
         'default' => [
-            'host' => 'localhost',
+            'host' => env('DB_HOST', 'localhost'),
             /*
              * CakePHP will use the default DB port based on the driver selected
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
              * the following line and set the port accordingly
              */
-            //'port' => 'non_standard_port_number',
+            'port' => env('DB_PORT', null),
 
-            'username' => 'my_app',
-            'password' => 'secret',
+            'username' => env('DB_USER', 'my_app'),
+            'password' => env('DB_PASS', 'secret'),
 
-            'database' => 'my_app',
+            'database' => env('DB_NAME', 'my_app'),
             /*
              * If not using the default 'public' schema with the PostgreSQL driver
              * set it here.
@@ -83,12 +83,20 @@ return [
      */
     'EmailTransport' => [
         'default' => [
-            'host' => 'localhost',
-            'port' => 25,
-            'username' => null,
-            'password' => null,
+            'className' => 'Smtp',
+            'host' => env('SMTP_HOST', 'localhost'),
+            'port' => env('SMTP_PORT', 25),
+            'username' => env('SMTP_USER', null),
+            'password' => env('SMTP_PASS', null),
             'client' => null,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
+            'tls' => false,
+        ],
+    ],
+    'Email' => [
+        'default' => [
+            'transport' => 'default',
+            'from' => ['no-reply@dbook.local' => 'DBook App'],
         ],
     ],
 ];
