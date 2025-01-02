@@ -93,4 +93,12 @@ return function (RouteBuilder $routes): void {
      * });
      * ```
      */
+
+    $routes->scope('/api/v1', ['prefix' => 'Api/V1'], function ($routes) {
+        $routes->setExtensions(['json']);
+
+        $routes->connect('/auth/login', ['controller' => 'Auth', 'action' => 'login', '_method' => 'POST']);
+        $routes->connect('/auth/register', ['controller' => 'Auth', 'action' => 'register', '_method' => 'POST']);
+        $routes->connect('/auth/confirm', ['controller' => 'Auth', 'action' => 'confirm', '_method' => 'GET']);
+    });
 };

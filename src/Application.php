@@ -16,6 +16,10 @@ declare(strict_types=1);
  */
 namespace App;
 
+use Authentication\AuthenticationService;
+use Authentication\AuthenticationServiceInterface;
+use Authentication\AuthenticationServiceProviderInterface;
+use Authentication\Middleware\AuthenticationMiddleware;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
@@ -27,6 +31,7 @@ use Cake\Http\MiddlewareQueue;
 use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Application setup class.
@@ -34,7 +39,7 @@ use Cake\Routing\Middleware\RoutingMiddleware;
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication
+class Application extends BaseApplication implements AuthenticationServiceProviderInterface
 {
     /**
      * Load all the application configuration and bootstrap logic.
@@ -95,11 +100,8 @@ class Application extends BaseApplication
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
 
-            // Cross Site Request Forgery (CSRF) Protection Middleware
-            // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
-            ->add(new CsrfProtectionMiddleware([
-                'httponly' => true,
-            ]));
+            // Auth Middleware - JWT Authentication
+            ->add(new AuthenticationMiddleware($this));
 
         return $middlewareQueue;
     }
@@ -113,6 +115,32 @@ class Application extends BaseApplication
      */
     public function services(ContainerInterface $container): void
     {
+    }
+
+    public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
+    {
+        $service = new AuthenticationService();
+
+        // Load JWT Authenticator
+        $service->loadAuthenticator('Authentication.Jwt', [
+            'secretKey' => env('JWT_SECRET', 'your-secret-key'),
+            'algorithm' => 'HS256',
+            'returnPayload' => false,
+        ]);
+
+        // Load Form Authenticator for login
+        $service->loadAuthenticator('Authentication.Form', [
+            'fields' => ['username' => 'email', 'password' => 'password'],
+            'loginUrl' => '/api/v1/auth/login',
+        ]);
+
+        // Load User Identifier for JWT
+        $service->loadIdentifier('Authentication.JwtSubject');
+        $service->loadIdentifier('Authentication.Password', [
+            'fields' => ['username' => 'email', 'password' => 'password'],
+        ]);
+
+        return $service;
     }
 
     /**
