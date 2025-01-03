@@ -1,12 +1,10 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: ./docker/php/Dockerfile
+    image: acdiasjunior/dbook-app
     container_name: dbook-app
     volumes:
       - ./:/app
-    environment:
+    environment: &app-environment-variables
       PHP_INI_SCAN_DIR: "/usr/local/etc/php/conf.d"
       DEBUG: "{DEBUG:-true}"
       DB_HOST: "mysql"
@@ -16,11 +14,14 @@ services:
       DB_PASS: "${DB_PASS:-DBookPassword#0}"
       SMTP_HOST: "${SMTP_HOST:-mailhog}"
       SMTP_PORT: "${SMTP_PORT:-1025}"
+      RABBITMQ_HOST: "${RABBITMQ_HOST:-rabbitmq}"
+      RABBITMQ_PORT: "${RABBITMQ_PORT:-5672}"
+      RABBITMQ_USER: "${RABBITMQ_USER:-guest}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS:-guest}"
       JWT_SECRET: "{JWT_SECRET:-your-secret-key}"
     working_dir: /app
     depends_on:
       - mysql
-      - mailhog
 
   web:
     image: nginx:latest
@@ -45,6 +46,27 @@ services:
       MYSQL_PASSWORD: "${DB_PASS:-DBookPassword#0}"
     volumes:
       - mysql-data:/var/lib/mysql
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: dbook-queue
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER:-guest}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASS:-guest}"
+
+  supervisor:
+    image: acdiasjunior/dbook-worker
+    container_name: dbook-worker
+    volumes:
+      - ./:/app
+      - ./docker/supervisor/supervisord.conf:/etc/supervisord.conf
+    environment: *app-environment-variables
+    working_dir: /app
+    depends_on:
+      - rabbitmq
 
   mailhog:
     image: mailhog/mailhog

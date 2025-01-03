@@ -4,10 +4,10 @@ declare (strict_types = 1);
 namespace App\Controller\Api\V1;
 
 use App\Controller\Api\ApiController;
+use App\Service\RabbitMQService;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Exception\UnauthorizedException;
-use Cake\Mailer\Mailer;
 use Cake\Routing\Router;
 use Firebase\JWT\JWT;
 
@@ -69,11 +69,13 @@ class AuthController extends ApiController
 
         $confirm_url = Router::url("/api/v1/auth/confirm?token={$user->register_token}", true);
 
-        // Send confirmation email with the register token
-        $mailer = new Mailer('default');
-        $mailer->setTo($user->email)
-            ->setSubject('Confirm Your Account')
-            ->deliver("Please confirm your account using this link: {$confirm_url}");
+        $emailTask = [
+            'email'   => $user->email,
+            'subject' => 'Confirm Your Account',
+            'body'    => "Please confirm your account using this link: {$confirm_url}",
+        ];
+
+        RabbitMQService::getInstance()->sendToQueue('email_queue', $emailTask);
 
         $this->set([
             'success' => true,
