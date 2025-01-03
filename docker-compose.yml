@@ -69,7 +69,7 @@ services:
       - rabbitmq
 
   mailhog:
-    image: mailhog/mailhog
+    image: acdiasjunior/mailhog
     container_name: dbook-mail
     ports:
       - "8025:8025" # Web interface
