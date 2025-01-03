@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace App\Model\Entity;
 
@@ -26,10 +26,12 @@ class User extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
-        'email' => true,
-        'password' => true,
-        'created' => true,
-        'modified' => true,
+        'email'          => true,
+        'password'       => true,
+        'active'         => true,
+        'register_token' => true,
+        'created'        => true,
+        'modified'       => true,
     ];
 
     /**

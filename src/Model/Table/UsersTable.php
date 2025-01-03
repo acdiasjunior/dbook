@@ -55,7 +55,7 @@ class UsersTable extends Table
         }
 
         // Generate a register token for new users
-        if ($entity->isNew() && empty($entity->register_token)) {
+        if ($entity->isNew() && empty($entity->register_token) && !$entity->active) {
             $entity->register_token = bin2hex(random_bytes(16));
         }
     }

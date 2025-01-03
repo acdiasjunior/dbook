@@ -100,5 +100,7 @@ return function (RouteBuilder $routes): void {
         $routes->connect('/auth/login', ['controller' => 'Auth', 'action' => 'login', '_method' => 'POST']);
         $routes->connect('/auth/register', ['controller' => 'Auth', 'action' => 'register', '_method' => 'POST']);
         $routes->connect('/auth/confirm', ['controller' => 'Auth', 'action' => 'confirm', '_method' => 'GET']);
+
+        $routes->resources('Users');
     });
 };
