@@ -15,8 +15,22 @@ fi
 echo "Installing Composer dependencies..."
 composer install --prefer-dist --optimize-autoloader
 
-# Add a small wait while MySQL is starting
-sleep 5
+echo "Waiting for MySQL to be ready..."
+
+# Retry until MySQL is ready
+while ! php -r "
+    try {
+        \$dbh = new PDO('mysql:host=${DB_HOST};port=${DB_PORT};', '${DB_USER}', '${DB_PASS}');
+        exit(0);
+    } catch (PDOException \$e) {
+        exit(1);
+    }
+"; do
+    echo "MySQL is not ready. Retrying in 2 seconds..."
+    sleep 2
+done
+
+echo "MySQL is ready!"
 
 # Run migrations
 echo "Running migrations..."

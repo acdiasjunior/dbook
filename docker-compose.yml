@@ -4,6 +4,7 @@ services:
     container_name: dbook-app
     volumes:
       - ./:/app
+      - ./docker/php/entrypoint.sh:/usr/local/bin/entrypoint.sh
     environment: &app-environment-variables
       PHP_INI_SCAN_DIR: "/usr/local/etc/php/conf.d"
       DEBUG: "{DEBUG:-true}"
@@ -20,6 +21,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS:-guest}"
       JWT_SECRET: "{JWT_SECRET:-your-secret-key}"
     working_dir: /app
+    entrypoint: ['bash', '/usr/local/bin/entrypoint.sh']
     depends_on:
       - mysql
 
