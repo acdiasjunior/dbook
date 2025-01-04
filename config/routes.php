@@ -102,5 +102,7 @@ return function (RouteBuilder $routes): void {
         $routes->connect('/auth/confirm', ['controller' => 'Auth', 'action' => 'confirm', '_method' => 'GET']);
 
         $routes->resources('Users');
+        $routes->resources('Books');
+        $routes->resources('Villains');
     });
 };
