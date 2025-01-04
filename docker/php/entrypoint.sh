@@ -40,6 +40,9 @@ bin/cake migrations migrate
 echo "Running seeders..."
 bin/cake migrations seed
 
+# Import Books from API
+bin/cake import_books
+
 # Start PHP-FPM in the foreground
 echo "Starting PHP-FPM..."
 exec php-fpm
