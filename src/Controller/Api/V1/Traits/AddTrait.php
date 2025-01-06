@@ -10,27 +10,52 @@ trait AddTrait
 
     public function add()
     {
-        $entity = $this->getModel()->newEntity($this->request->getData());
+        try {
+            $entity = $this->getModel()->newEntity($this->request->getData());
 
-        if ($this->getModel()->save($entity)) {
-            $message = 'Record created';
-        } else {
-            $message = 'Error while creating record';
+            if ($entity->hasErrors()) {
+                $this->response = $this->response->withStatus(422);
+
+                $this->set([
+                    'message' => 'Validation failed',
+                    'errors'  => $entity->getErrors(),
+                ]);
+
+                $this->viewBuilder()->setOption('serialize', ['message', 'errors']);
+
+                return;
+            }
+
+            if ($this->getModel()->save($entity)) {
+                $this->response = $this->response->withStatus(201);
+
+                $this->set([
+                    'message' => 'Record created',
+                    'item'    => $entity,
+                ]);
+
+                $this->viewBuilder()->setOption('serialize', ['message', 'item']);
+
+                return;
+            }
+
+            $this->response = $this->response->withStatus(409);
+
+            $this->set([
+                'message' => 'Conflict: Unable to save record',
+            ]);
+
+            $this->viewBuilder()->setOption('serialize', ['message']);
+        } catch (\Exception $e) {
+            $this->response = $this->response->withStatus(500);
+
+            $this->set([
+                'message' => 'An unexpected error occurred',
+                'error'   => $e->getMessage(),
+            ]);
+
+            $this->viewBuilder()->setOption('serialize', ['message', 'error']);
         }
-
-        $serialize = ['item', 'message'];
-
-        if ($entity->getErrors()) {
-            $this->set(['errors' => $entity->getErrors()]);
-            $serialize[] = 'errors';
-        }
-
-        $this->set([
-            'message' => $message,
-            'item'    => $entity,
-        ]);
-
-        $this->viewBuilder()->setOption('serialize', $serialize);
     }
 
 }

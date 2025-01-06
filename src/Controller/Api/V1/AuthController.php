@@ -57,33 +57,83 @@ class AuthController extends ApiController
      */
     public function register()
     {
-        $this->request->allowMethod(['post']);
+        try {
+            $this->request->allowMethod(['post']);
 
-        $this->Users = $this->fetchTable('Users');
+            $this->Users = $this->fetchTable('Users');
 
-        $user = $this->Users->newEmptyEntity();
-        $user = $this->Users->patchEntity($user, $this->request->getData());
+            $user = $this->Users->newEmptyEntity();
+            $user = $this->Users->patchEntity($user, $this->request->getData());
 
-        if (!$this->Users->save($user)) {
-            throw new BadRequestException('Unable to register user.');
+            // Check if the user already exists
+            $userExists = $this->Users->exists(['email' => $user->email]);
+
+            if ($userExists) {
+                $this->response = $this->response->withStatus(409);
+
+                $this->set([
+                    'success' => false,
+                    'message' => 'Unable to process registration. User already exists.',
+                ]);
+
+                $this->viewBuilder()->setOption('serialize', ['success', 'message']);
+                return;
+            }
+
+            if ($user->hasErrors()) {
+                $this->response = $this->response->withStatus(422);
+
+                $this->set([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors'  => $user->getErrors(),
+                ]);
+
+                $this->viewBuilder()->setOption('serialize', ['success', 'message', 'errors']);
+                return;
+            }
+
+            if (!$this->Users->save($user)) {
+                $this->response = $this->response->withStatus(409);
+
+                $this->set([
+                    'success' => false,
+                    'message' => 'Unable to register user.',
+                ]);
+
+                $this->viewBuilder()->setOption('serialize', ['success', 'message']);
+                return;
+            }
+
+            $confirm_url = Router::url("/api/v1/auth/confirm?token={$user->register_token}", true);
+
+            $emailTask = [
+                'email'   => $user->email,
+                'subject' => 'Confirm Your Account',
+                'body'    => "Please confirm your account using this link: {$confirm_url}",
+            ];
+
+            RabbitMQService::getInstance()->sendToQueue('email_queue', $emailTask);
+
+            $this->response = $this->response->withStatus(201);
+
+            $this->set([
+                'success' => true,
+                'message' => 'User registered successfully. Please check your email to confirm your account.',
+            ]);
+
+            $this->viewBuilder()->setOption('serialize', ['success', 'message']);
+        } catch (\Exception $e) {
+            $this->response = $this->response->withStatus(500);
+
+            $this->set([
+                'success' => false,
+                'message' => 'An unexpected error occurred.',
+                'error'   => $e->getMessage(),
+            ]);
+
+            $this->viewBuilder()->setOption('serialize', ['success', 'message', 'error']);
         }
-
-        $confirm_url = Router::url("/api/v1/auth/confirm?token={$user->register_token}", true);
-
-        $emailTask = [
-            'email'   => $user->email,
-            'subject' => 'Confirm Your Account',
-            'body'    => "Please confirm your account using this link: {$confirm_url}",
-        ];
-
-        RabbitMQService::getInstance()->sendToQueue('email_queue', $emailTask);
-
-        $this->set([
-            'success' => true,
-            'message' => 'User registered successfully. Please check your email to confirm your account.',
-        ]);
-
-        $this->viewBuilder()->setOption('serialize', ['success', 'message']);
     }
 
     public function confirm()
