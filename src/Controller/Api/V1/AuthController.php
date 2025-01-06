@@ -5,6 +5,7 @@ namespace App\Controller\Api\V1;
 
 use App\Controller\Api\ApiController;
 use App\Service\RabbitMQService;
+use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Exception\UnauthorizedException;
@@ -33,7 +34,7 @@ class AuthController extends ApiController
         }
 
         // Generate JWT token
-        $secretKey = env('JWT_SECRET', 'your-secret-key');
+        $secretKey = Configure::readOrFail('dbook.jwt.secret');
 
         $payload = [
             'sub' => $user->id,

@@ -69,6 +69,8 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         }
 
         // Load more plugins here
+
+        Configure::load('dbook', 'default', false);
     }
 
     /**
@@ -123,7 +125,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
         // Load JWT Authenticator
         $service->loadAuthenticator('Authentication.Jwt', [
-            'secretKey' => env('JWT_SECRET', 'your-secret-key'),
+            'secretKey' => Configure::readOrFail('dbook.jwt.secret'),
             'algorithm' => 'HS256',
             'returnPayload' => false,
         ]);

@@ -3,6 +3,7 @@ declare (strict_types = 1);
 
 namespace App\Service;
 
+use Cake\Core\Configure;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -15,10 +16,10 @@ class RabbitMQService
     private function __construct()
     {
         $this->connection = new AMQPStreamConnection(
-            env('RABBITMQ_HOST', 'rabbitmq'),
-            env('RABBITMQ_PORT', 5672),
-            env('RABBITMQ_USER', 'guest'),
-            env('RABBITMQ_PASS', 'guest')
+            host: Configure::readOrFail('dbook.rabbitmq.host'),
+            port: Configure::readOrFail('dbook.rabbitmq.port'),
+            user: Configure::readOrFail('dbook.rabbitmq.user'),
+            password: Configure::readOrFail('dbook.rabbitmq.pass'),
         );
 
         $this->channel = $this->connection->channel();
