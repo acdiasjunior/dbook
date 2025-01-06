@@ -1,53 +1,75 @@
-# CakePHP Application Skeleton
+# **DBook Project**
 
-![Build Status](https://github.com/cakephp/app/actions/workflows/ci.yml/badge.svg?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%207-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
+DBook is a PHP-based project that uses CakePHP, MySQL, and RabbitMQ to create a simple API for managing books. This README describes the project structure, how to set up and run the project, and how to use additional tools such as Mailhog and Postman.
 
-A skeleton for creating applications with [CakePHP](https://cakephp.org) 4.x.
+---
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+## Docker-Compose Structure
 
-## Installation
+The project uses `docker-compose` to orchestrate the containers, each responsible for a specific task:
 
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+- **`app`**: The main application container, running CakePHP and PHP-FPM.
+- **`db`**: The MySQL database container, storing all project data.
+- **`mail`**: A lightweight SMTP server for capturing and viewing emails sent by the application. Accessible via a web interface.
+- **`queue`**: The RabbitMQ container, used for queuing and managing background tasks.
+- **`web`**: The Nginx container, serving the application and routing requests to the app container.
+- **`worker`**: PHP Cli + Supervisor container, used for starting the service workers.
 
-If Composer is installed globally, run
+---
 
-```bash
-composer create-project --prefer-dist cakephp/app
-```
+## Getting Started
 
-In case you want to use a custom app dir name (e.g. `/myapp/`):
+Follow these steps to set up and run the project:
 
-```bash
-composer create-project --prefer-dist cakephp/app myapp
-```
+### Step 1: Clone the Repository
+1. Clone the repository to your local machine:
+    ```
+    git clone https://github.com/your-repo/dbook.git
+    cd dbook
+    ```
 
-You can now either use your machine's webserver to view the default home page, or start
-up the built-in webserver with:
+### Step 2: Copy and Edit the Environment File
+1. Copy the `.env.example` file to `.env`:
+    ```
+    cp .env.example .env
+    ```
 
-```bash
-bin/cake server -p 8765
-```
+2. Edit the `.env` file to update the following variables as needed:
+   - **Database credentials**:
+     - `DB_HOST`
+     - `DB_USER`
+     - `DB_PASS`
+   - **JWT Secret**
+     - `JWT_SECRET`
+   - **RabbitMQ credentials**:
+     - `RABBITMQ_HOST`
+     - `RABBITMQ_USER`
+     - `RABBITMQ_PASS`
+   - **SMTP settings**:
+     - `SMTP_HOST`
+     - `SMTP_PORT`
 
-Then visit `http://localhost:8765` to see the welcome page.
+### Step 3: Start the Containers
+1. Start the Docker containers using the following command:
+    ```
+    docker-compose up -d
+    ```
 
-## Update
+---
 
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
+## Mailhog
 
-## Configuration
+The application uses **Mailhog** to capture outgoing emails during development. 
 
-Read and edit the environment specific `config/app_local.php` and set up the
-`'Datasources'` and any other configuration relevant for your application.
-Other environment agnostic settings can be changed in `config/app.php`.
+### Access Mailhog
+1. Open your browser and go to:
 
-## Layout
+    http://localhost:8025
 
-The app skeleton uses [Milligram](https://milligram.io/) (v1.3) minimalist CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.
+2. View and interact with the emails sent by the application through Mailhog's web interface.
+
+---
+
+## Postman Collection
+
+The project includes a Postman collection for testing API endpoints. The file `DBook.postman_collection.json` is located on the project root directory.

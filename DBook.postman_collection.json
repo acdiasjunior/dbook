@@ -1,0 +1,789 @@
+{
+	"info": {
+		"_postman_id": "528081bc-f819-4ba2-9d5d-93b995dde5ee",
+		"name": "DBook",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3680133"
+	},
+	"item": [
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "Books - Index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/books",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Books - Index - By Year",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/books?year=2021",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"books"
+							],
+							"query": [
+								{
+									"key": "year",
+									"value": "2021"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Books - View",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/books/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"books",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Books - Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "Carrie",
+									"type": "text"
+								},
+								{
+									"key": "year",
+									"value": "1974",
+									"type": "text"
+								},
+								{
+									"key": "handle",
+									"value": "carrie",
+									"type": "text"
+								},
+								{
+									"key": "publisher",
+									"value": "Doubleday",
+									"type": "text"
+								},
+								{
+									"key": "isbn",
+									"value": "978-1-78909-649-0",
+									"type": "text"
+								},
+								{
+									"key": "pages",
+									"value": "199",
+									"type": "text"
+								},
+								{
+									"key": "notes",
+									"value": "[\"\"]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/books/100",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"books",
+								"100"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Books - Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "New Book",
+									"type": "text"
+								},
+								{
+									"key": "year",
+									"value": "2025",
+									"type": "text"
+								},
+								{
+									"key": "handle",
+									"value": "new-book",
+									"type": "text"
+								},
+								{
+									"key": "publisher",
+									"value": "DataBank",
+									"type": "text"
+								},
+								{
+									"key": "isbn",
+									"value": "000-0-000-00000-0",
+									"type": "text"
+								},
+								{
+									"key": "pages",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "notes",
+									"value": "[\"\"]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/books",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Books - Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "Carrie",
+									"type": "text"
+								},
+								{
+									"key": "year",
+									"value": "1974",
+									"type": "text"
+								},
+								{
+									"key": "handle",
+									"value": "carrie",
+									"type": "text"
+								},
+								{
+									"key": "publisher",
+									"value": "Doubleday",
+									"type": "text"
+								},
+								{
+									"key": "isbn",
+									"value": "978-0-385-08695-0",
+									"type": "text"
+								},
+								{
+									"key": "pages",
+									"value": "199",
+									"type": "text"
+								},
+								{
+									"key": "notes",
+									"value": "[\"\"]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/books/64",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"books",
+								"64"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Villains",
+			"item": [
+				{
+					"name": "Villains - Index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/villains",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"villains"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Villains - Index - By Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/villains?name=Cindi",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"villains"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Cindi"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Villains - View",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/villains/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"villains",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Villains - Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Tina Blake",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/villains/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"villains",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Villains - Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Jon Snow",
+									"type": "text"
+								},
+								{
+									"key": "url",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/villains",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"villains"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Villains - Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "Carrie",
+									"type": "text"
+								},
+								{
+									"key": "year",
+									"value": "1974",
+									"type": "text"
+								},
+								{
+									"key": "handle",
+									"value": "carrie",
+									"type": "text"
+								},
+								{
+									"key": "publisher",
+									"value": "Doubleday",
+									"type": "text"
+								},
+								{
+									"key": "isbn",
+									"value": "978-0-385-08695-0",
+									"type": "text"
+								},
+								{
+									"key": "pages",
+									"value": "199",
+									"type": "text"
+								},
+								{
+									"key": "notes",
+									"value": "[\"\"]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/villains",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"villains"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Users - Index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/users",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - View",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/users/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "user@dbook.local",
+									"type": "text"
+								},
+								{
+									"key": "active",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/users/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "user2@dbook.local",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "654321",
+									"type": "text"
+								},
+								{
+									"key": "active",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "register_token",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/users",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "acdiasjunior@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "active",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "654321",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/users/2",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Auth - Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{USER}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{PASS}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/auth/login",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth - Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "user3@dbook.local",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "databank123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/auth/register",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.headers.upsert({key: 'Accept', value: 'application/json' });",
+					"",
+					"const token = pm.collectionVariables.get('TOKEN');",
+					"const expires = pm.collectionVariables.get('TOKEN_EXP');",
+					"const currentTime = Math.floor(Date.now() / 1000);",
+					"",
+					"if (!token || !expires || currentTime >= expires) {",
+					"    console.log('Token is missing or expired. Logging in...');",
+					"    pm.sendRequest({",
+					"        url: pm.collectionVariables.get('HOST') + '/api/v1/auth/login',",
+					"        method: 'POST',",
+					"        header: {",
+					"            'Content-Type': 'application/json',",
+					"            'Accept': 'application/json',",
+					"        },",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                email: pm.collectionVariables.get('USER'),",
+					"                password: pm.collectionVariables.get('PASS'),",
+					"            })",
+					"        }",
+					"    }, function (err, response) {",
+					"        if (!err && response.code === 200) {",
+					"            const jsonData = response.json();",
+					"            pm.collectionVariables.set('TOKEN', jsonData.token);",
+					"            pm.collectionVariables.set('TOKEN_EXP', jsonData.expires);",
+					"            console.log('New token stored.');",
+					"        } else {",
+					"            console.error('Failed to log in:', err);",
+					"        }",
+					"    });",
+					"} else {",
+					"    console.log('Token is still valid. Reusing existing token.');",
+					"}",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "http://localhost:8080",
+			"type": "default"
+		},
+		{
+			"key": "TOKEN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "TOKEN_EXP",
+			"value": ""
+		},
+		{
+			"key": "USER",
+			"value": "user@dbook.local",
+			"type": "string"
+		},
+		{
+			"key": "PASS",
+			"value": "123456",
+			"type": "string"
+		}
+	]
+}
