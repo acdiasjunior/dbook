@@ -8,6 +8,7 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Http\Client;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 
 class ImportBooksCommand extends Command
@@ -54,7 +55,7 @@ class ImportBooksCommand extends Command
                     'isbn'       => $bookData['ISBN'],
                     'pages'      => $bookData['Pages'],
                     'notes'      => json_encode($bookData['Notes']),
-                    'created_at' => date('Y-m-d H:i:s', strtotime($bookData['created_at'])),
+                    'created_at' => FrozenTime::parse($bookData['created_at']),
                 ]);
             }
 

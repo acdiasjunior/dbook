@@ -7,6 +7,7 @@ use App\Service\RabbitMQService;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
+use Cake\I18n\FrozenTime;
 use Cake\Mailer\Mailer;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -17,7 +18,7 @@ class EmailWorkerCommand extends Command
     {
         $rabbitMQService = RabbitMQService::getInstance();
 
-        $timestamp = fn() => date('Y-m-d H:i:s');
+        $timestamp = fn() => FrozenTime::now()->format('Y-m-d H:i:s');
 
         $callback = function (AMQPMessage $msg) use ($io, $timestamp) {
             $task = json_decode($msg->getBody(), true);
