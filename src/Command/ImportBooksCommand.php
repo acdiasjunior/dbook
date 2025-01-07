@@ -40,7 +40,7 @@ class ImportBooksCommand extends Command
             // Workaround for a wrong ISBN on the Green Mile Book
             $bookData['ISBN'] = substr($bookData['ISBN'], 0, 17);
 
-            $book = Cache::remember('villain_' . md5($bookData['ISBN']), function () use ($booksTable, $bookData) {
+            $book = Cache::remember('book_' . md5($bookData['ISBN']), function () use ($booksTable, $bookData) {
                 return $booksTable->find()
                     ->where(['isbn' => $bookData['ISBN']])
                     ->first();
